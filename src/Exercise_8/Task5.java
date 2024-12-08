@@ -2,30 +2,49 @@ package Exercise_8;
 
 import java.util.function.Consumer;
 
-public class Task5 {}
+public class Task5 {
+    public static void main(String[] args) {
+        ObjectList L = new ObjectList();
+        ObjectList L1 = L.addElement("1");
+        ObjectList L2 = L1.addElement("2");
+        ObjectList L3 = L2.addElement("3");
 
-class List  {
-    static class Node {
+        System.out.println(L1);
+
+        System.out.println(L2);
+
+        System.out.println(L3);
+
+        System.out.println(L3.head());
+
+        System.out.println(L3.afterHead());
+
+        ObjectList L4 = L3.addElement("4").addElement("5").addElement("6");
+        System.out.println(L4);
+    }
+}
+
+class ObjectList  {
+    static class ObjectNode {
         public Object data;
-        public Node next = null;
+        public ObjectNode next = null;
 
-        public Node(Object value) {
+        public ObjectNode(Object value) {
             data = value;
         }
     }
-    Node first = null; // root
-    Node last = null; // head
+    ObjectNode first = null; // root
+    ObjectNode last = null; // head
 
-    @SafeVarargs
-    public static List of(Object... elements) {
-        List result = new List();
+    public static ObjectList of(Object... elements) {
+        ObjectList result = new ObjectList();
         for (Object el : elements)
             result.addElement(el);
         return result;
     }
 
     private void add(Object el) {
-        Node n = new Node(el);
+        ObjectNode n = new ObjectNode(el);
         if (last != null)
             last.next = n;
         last = n;
@@ -34,15 +53,16 @@ class List  {
     }
 
     // or 'cons'
-    public List addElement(Object el) {
-        List retlist = new List();
-        retlist = this.copy();
-        retlist.add(el);
-        return retlist;
+    public ObjectList addElement(Object el) {
+        new ObjectList();
+        ObjectList retList;
+        retList = this.copy();
+        retList.add(el);
+        return retList;
     }
 
-    private List copy() {
-        List retList = new List();
+    private ObjectList copy() {
+        ObjectList retList = new ObjectList();
         this.forEach(retList::add);
         return retList;
     }
@@ -51,7 +71,7 @@ class List  {
         traverseAndApply(first, action);
     }
 
-    private void traverseAndApply(Node n, Consumer<? super Object> action) {
+    private void traverseAndApply(ObjectNode n, Consumer<? super Object> action) {
         if (n == null)
             return;
         action.accept(n.data);
@@ -62,8 +82,8 @@ class List  {
         return this.first == null;
     }
 
-    public List theEmptyList() {
-        return new List();
+    public ObjectList theEmptyList() {
+        return new ObjectList();
     }
 
     // or 'car'
@@ -72,17 +92,17 @@ class List  {
     }
 
     // or 'cdr'
-    public List afterHead() {
+    public ObjectList afterHead() {
         if (this.last == this.first) {
-            return new List();
+            return new ObjectList();
         } else {
-            List retlist = new List();
-            Node current = this.first;
+            ObjectList retList = new ObjectList();
+            ObjectNode current = this.first;
             while (current != this.last) {
-                retlist.add(current.data);
+                retList.add(current.data);
                 current = current.next;
             }
-            return retlist;
+            return retList;
         }
     }
 
@@ -92,7 +112,7 @@ class List  {
             return "";
         } else {
             StringBuilder retString = new StringBuilder();
-            Node current = this.first;
+            ObjectNode current = this.first;
             do {
                 retString.insert(0, String.valueOf(current.data) + " ");
                 current = current.next;
